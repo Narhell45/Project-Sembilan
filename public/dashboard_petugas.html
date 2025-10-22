@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Petugas - Inventaris Sekolah</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Dashboard Petugas</h1>
+    <button onclick="logout()">Logout</button>
+  </header>
+
+  <div class="sidebar">
+    <a href="#">Beranda</a>
+    <a href="#">Data Barang</a>
+    <a href="#">Catatan Perawatan</a>
+    <a href="#">Laporan Stok</a>
+  </div>
+
+  <main>
+    <h2>Data Inventaris</h2>
+    <table id="tabelBarang">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nama Barang</th>
+          <th>Jumlah</th>
+          <th>Kondisi</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data akan dimuat dari PHP -->
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    // Ambil data dari server (file PHP)
+    fetch('get_data_petugas.php')
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.querySelector("#tabelBarang tbody");
+        data.forEach(barang => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${barang.id}</td>
+            <td>${barang.nama}</td>
+            <td>${barang.jumlah}</td>
+            <td>${barang.kondisi}</td>
+            <td>
+              <button onclick="updateBarang(${barang.id})">Perbarui</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      });
+
+    function logout() {
+      fetch('logout.php')
+        .then(() => window.location.href = 'index.html');
+    }
+
+    function updateBarang(id) {
+      const kondisiBaru = prompt("Masukkan kondisi terbaru barang (Baik/Rusak):");
+      if (kondisiBaru) {
+        fetch(`update_barang.php?id=${id}&kondisi=${encodeURIComponent(kondisiBaru)}`)
+          .then(() => location.reload());
+      }
+    }
+  </script>
+
+</body>
+</html>

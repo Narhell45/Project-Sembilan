@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - Inventaris Sekolah</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Dashboard Admin</h1>
+    <button onclick="logout()">Logout</button>
+  </header>
+
+  <div class="sidebar">
+    <a href="#">🏠 Beranda</a>
+    <a href="#">📦 Data Barang</a>
+    <a href="#">👥 Data Pengguna</a>
+    <a href="#">📊 Laporan</a>
+  </div>
+
+  <main>
+    <h2>Data Inventaris</h2>
+    <table id="tabelBarang">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nama Barang</th>
+          <th>Jumlah</th>
+          <th>Kondisi</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data akan dimuat dari PHP -->
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    // Ambil data dari server
+    fetch('get_data.php')
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.querySelector("#tabelBarang tbody");
+        data.forEach(barang => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${barang.id}</td>
+            <td>${barang.nama}</td>
+            <td>${barang.jumlah}</td>
+            <td>${barang.kondisi}</td>
+            <td>
+              <button onclick="editBarang(${barang.id})">Edit</button>
+              <button onclick="hapusBarang(${barang.id})" style="background-color:#e84118">Hapus</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      });
+
+    function logout() {
+      fetch('logout.php')
+        .then(() => window.location.href = 'index.html');
+    }
+
+    function editBarang(id) {
+      alert('Edit barang dengan ID: ' + id);
+      // nanti diarahkan ke form edit
+    }
+
+    function hapusBarang(id) {
+      if (confirm('Yakin ingin menghapus barang ini?')) {
+        fetch(`hapus_barang.php?id=${id}`)
+          .then(() => location.reload());
+      }
+    }
+  </script>
+
+</body>
+</html>
