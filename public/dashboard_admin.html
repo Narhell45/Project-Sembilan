@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Admin - Inventaris Sekolah</title>
+  <title>Dashboard Admin</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,10 +14,10 @@
   </header>
 
   <div class="sidebar">
-    <a href="#">🏠 Beranda</a>
-    <a href="#">📦 Data Barang</a>
-    <a href="#">👥 Data Pengguna</a>
-    <a href="#">📊 Laporan</a>
+    <a href="#"> Beranda</a>
+    <a href="#"> Data Barang</a>
+    <a href="#"> Data Pengguna</a>
+    <a href="#"> Laporan</a>
   </div>
 
   <main>
@@ -33,13 +33,11 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Data akan dimuat dari PHP -->
       </tbody>
     </table>
   </main>
 
   <script>
-    // Ambil data dari server
     fetch('get_data.php')
       .then(response => response.json())
       .then(data => {
@@ -67,7 +65,6 @@
 
     function editBarang(id) {
       alert('Edit barang dengan ID: ' + id);
-      // nanti diarahkan ke form edit
     }
 
     function hapusBarang(id) {
