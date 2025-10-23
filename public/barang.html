@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Barang - Inventaris Sekolah</title>
+  <title>Data Barang</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,9 +14,8 @@
   </header>
 
   <main>
-    <h2>Daftar Inventaris Barang</h2>
+    <h2>Daftar Barang</h2>
 
-    <!-- Tabel Barang -->
     <table id="tabelBarang">
       <thead>
         <tr>
@@ -28,11 +27,9 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Data barang dimuat dari PHP -->
       </tbody>
     </table>
 
-    <!-- Form Tambah Barang -->
     <div class="form-container">
       <h3>Tambah Barang Baru</h3>
       <input type="text" id="namaBarang" placeholder="Nama Barang">
@@ -43,7 +40,6 @@
   </main>
 
   <script>
-    // Ambil data dari server
     function muatBarang() {
       fetch('get_barang.php')
         .then(res => res.json())
@@ -113,7 +109,6 @@
         .then(() => window.location.href = 'index.html');
     }
 
-    // Load data pertama kali
     muatBarang();
   </script>
 </body>
