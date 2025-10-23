@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Petugas - Inventaris Sekolah</title>
+  <title>Dashboard Petugas</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,13 +33,11 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Data akan dimuat dari PHP -->
       </tbody>
     </table>
   </main>
 
   <script>
-    // Ambil data dari server (file PHP)
     fetch('get_data_petugas.php')
       .then(response => response.json())
       .then(data => {
