@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Barang</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Data Barang</a>
+      <button class="btn btn-light" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <main class="container mt-4">
+    <h2 class="text-primary mb-4">Daftar Barang</h2>
+    
+    <table id="tabelBarang" class="table table-bordered table-striped">
+      <thead>  
+        <tr>
+          <th>ID</th>
+          <th>Nama Barang</th>
+          <th>Jumlah</th>
+          <th>Kondisi</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+    <div class="card p-4 shadow-sm mt-5">
+      <h3>Tambah Barang Baru</h3>
+      <input type="text" id="namaBarang" placeholder="Nama Barang">
+      <input type="number" id="jumlahBarang" placeholder="Jumlah">
+      <input type="text" id="kondisiBarang" placeholder="Kondisi (Baik/Rusak)">
+      <button onclick="tambahBarang()" class="btn btn-primary">Tambah</button>
+    </div>
+  </main>
+
+  <script>
+    function muatBarang() {
+      fetch('../server/barang_read.php')
+        .then(res => res.json())
+        .then(data => {
+          const tbody = document.querySelector("#tabelBarang tbody");
+          tbody.innerHTML = "";
+          data.forEach(b => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+            <td>${b.id}</td>
+              <td>${b.nama}</td>
+              <td>${b.jumlah}</td>
+              <td>${b.kondisi}</td>
+              <td>
+                <button class="btn btn-sm btn-warning me-2" onclick="editBarang(${b.id})">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="hapusBarang(${b.id})">Hapus</button>
+              </td>
+            `;
+            tbody.appendChild(row);
+          });
+        });
+    }
+
+    function tambahBarang() {
+      const nama = document.getElementById('namaBarang').value;
+      const jumlah = document.getElementById('jumlahBarang').value;
+      const kondisi = document.getElementById('kondisiBarang').value;
+
+      if (!nama || !jumlah || !kondisi) {
+        alert('Lengkapi semua field terlebih dahulu!');
+        return;
+      }
+
+      fetch(`../server/barang_create.php?nama=${encodeURIComponent(nama)}&jumlah=${jumlah}&kondisi=${encodeURIComponent(kondisi)}`)
+        .then(() => {
+          alert('Barang berhasil ditambahkan!');
+          muatBarang();
+        });
+    }
+
+    function editBarang(id) {
+      const namaBaru = prompt("Masukkan nama barang baru:");
+      const jumlahBaru = prompt("Masukkan jumlah baru:");
+      const kondisiBaru = prompt("Masukkan kondisi baru:");
+
+      if (namaBaru && jumlahBaru && kondisiBaru) {
+        fetch(`../server/barang_update.php?id=${id}&nama=${encodeURIComponent(namaBaru)}&jumlah=${jumlahBaru}&kondisi=${encodeURIComponent(kondisiBaru)}`)
+          .then(() => {
+            alert('Barang berhasil diperbarui!');
+            muatBarang();
+          });
+      }
+    }
+
+    function hapusBarang(id) {
+      if (confirm("Yakin ingin menghapus barang ini?")) {
+        fetch(`../server/barang_delete.php?id=${id}`)
+          .then(() => {
+            alert('Barang dihapus!');
+            muatBarang();
+          });
+      }
+    }
+
+    function logout() {
+      fetch('../server/logout.php')
+        .then(() => window.location.href = 'index.html');
+    }
+
+    muatBarang();
+  </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">DASHBOARD ADMIN</a>
+      <button class="btn btn-light" onclick="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse vh-100">
+        <div class="position-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link active text-primary" href="#">Beranda</a></li>
+            <li class="nav-item"><a class="nav-link text-primary" href="#">Data Barang</a></li>
+            <li class="nav-item"><a class="nav-link text-primary" href="#">Data Pengguna</a></li>
+            <li class="nav-item"><a class="nav-link text-primary" href="#">Laporan</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <h2 class="mt-3 text-primary">Data Inventaris</h2>
+        <table id="tabelBarang" class="table table-bordered table-striped mt-3">
+          </table>
+        
+        </main>
+    </div>
+  </div>
+
+  <script>
+    fetch('../server/barang_read.php')
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.querySelector("#tabelBarang tbody");
+        data.forEach(barang => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${barang.id}</td>
+            <td>${barang.nama}</td>
+            <td>${barang.jumlah}</td>
+            <td>${barang.kondisi}</td>
+            <td>
+              <button onclick="editBarang(${barang.id})">Edit</button>
+              <button onclick="hapusBarang(${barang.id})" style="background-color:#e84118">Hapus</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      });
+
+    function logout() {
+      fetch('../server/logout.php')
+        .then(() => window.location.href = 'index.html');
+    }
+
+    function editBarang(id) {
+      alert('Edit barang dengan ID: ' + id);
+    }
+
+    function hapusBarang(id) {
+      if (confirm('Yakin ingin menghapus barang ini?')) {
+        fetch(`hapus_barang.php?id=${id}`)
+          .then(() => location.reload());
+      }
+    }
+  </script>
+
+</body>
+</html>
