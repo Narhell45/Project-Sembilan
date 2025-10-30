@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Barang</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Data Barang</h1>
+    <button onclick="logout()">Logout</button>
+  </header>
+
+  <main>
+    <h2>Daftar Barang</h2>
+
+    <table id="tabelBarang">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nama Barang</th>
+          <th>Jumlah</th>
+          <th>Kondisi</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+    <div class="form-container">
+      <h3>Tambah Barang Baru</h3>
+      <input type="text" id="namaBarang" placeholder="Nama Barang">
+      <input type="number" id="jumlahBarang" placeholder="Jumlah">
+      <input type="text" id="kondisiBarang" placeholder="Kondisi (Baik, Rusak, Hilang)">
+      <button onclick="tambahBarang()">Tambah</button>
+    </div>
+  </main>
+
+  <script>
+    function muatBarang() {
+      fetch('get_barang.php')
+        .then(res => res.json())
+        .then(data => {
+          const tbody = document.querySelector("#tabelBarang tbody");
+          tbody.innerHTML = "";
+          data.forEach(b => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${b.id}</td>
+              <td>${b.nama}</td>
+              <td>${b.jumlah}</td>
+              <td>${b.kondisi}</td>
+              <td>
+                <button class="action-btn" onclick="editBarang(${b.id})">Edit</button>
+                <button class="action-btn" onclick="hapusBarang(${b.id})">Hapus</button>
+              </td>
+            `;
+            tbody.appendChild(row);
+          });
+        });
+    }
+
+    function tambahBarang() {
+      const nama = document.getElementById('namaBarang').value;
+      const jumlah = document.getElementById('jumlahBarang').value;
+      const kondisi = document.getElementById('kondisiBarang').value;
+
+      if (!nama || !jumlah || !kondisi) {
+        alert('Lengkapi semua field terlebih dahulu!');
+        return;
+      }
+
+      fetch(`add_barang.php?nama=${encodeURIComponent(nama)}&jumlah=${jumlah}&kondisi=${encodeURIComponent(kondisi)}`)
+        .then(() => {
+          alert('Barang berhasil ditambahkan!');
+          muatBarang();
+        });
+    }
+
+    function editBarang(id) {
+      const namaBaru = prompt("Masukkan nama barang baru:");
+      const jumlahBaru = prompt("Masukkan jumlah baru:");
+      const kondisiBaru = prompt("Masukkan kondisi baru:");
+
+      if (namaBaru && jumlahBaru && kondisiBaru) {
+        fetch(`update_barang.php?id=${id}&nama=${encodeURIComponent(namaBaru)}&jumlah=${jumlahBaru}&kondisi=${encodeURIComponent(kondisiBaru)}`)
+          .then(() => {
+            alert('Barang berhasil diperbarui!');
+            muatBarang();
+          });
+      }
+    }
+
+    function hapusBarang(id) {
+      if (confirm("Yakin ingin menghapus barang ini?")) {
+        fetch(`delete_barang.php?id=${id}`)
+          .then(() => {
+            alert('Barang dihapus!');
+            muatBarang();
+          });
+      }
+    }
+
+    function logout() {
+      fetch('logout.php')
+        .then(() => window.location.href = 'index.html');
+    }
+
+    muatBarang();
+  </script>
+</body>
+</html>
