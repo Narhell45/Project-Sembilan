@@ -1,20 +1,30 @@
 <?php
-    include("../config/koneksi.php"); 
+session_start();
+include("../config/koneksi.php");
 
-    $nama = $_GET['nama'];
-    $jumlah = $_GET['jumlah'];
-    $kondisi = $_GET['kondisi'];
+if (!isset($_SESSION['username'])) {
+    die(json_encode(["status" => "error", "message" => "Unauthorized"]));
+}
 
-    if (empty($nama) || empty($jumlah) || empty($kondisi)) {
-        http_response_code(400);
-        exit;
-    }
+$nama_barang   = mysqli_real_escape_string($koneksi, $_POST['nama_barang']);
+$kode_barang   = mysqli_real_escape_string($koneksi, $_POST['kode_barang']);
+$jumlah        = intval($_POST['jumlah']);
+$kondisi       = mysqli_real_escape_string($koneksi, $_POST['kondisi']);
+$lokasi        = mysqli_real_escape_string($koneksi, $_POST['lokasi']);
+$id_user       = $_SESSION['id_user'];
 
-    $query = "INSERT INTO inventaris (nama_barang, jumlah, kondisi) VALUES ('$nama', '$jumlah', '$kondisi')"; 
-    
-    if (mysqli_query($koneksi, $query)) {
-        http_response_code(200);
-    } else {
-        http_response_code(500);
-    }
+if (empty($nama_barang) || empty($kode_barang) || empty($jumlah) || empty($kondisi) || empty($lokasi)) {
+    die(json_encode(["status" => "error", "message" => "Semua field harus diisi."]));
+}
+
+$tanggal_input = date("Y-m-d");
+
+$query = "INSERT INTO inventaris (nama_barang, kode_barang, jumlah, kondisi, lokasi, tanggal_input, id_user)
+          VALUES ('$nama_barang', '$kode_barang', '$jumlah', '$kondisi', '$lokasi', '$tanggal_input', '$id_user')";
+
+if (mysqli_query($koneksi, $query)) {
+    echo json_encode(["status" => "success", "message" => "Barang berhasil ditambahkan."]);
+} else {
+    echo json_encode(["status" => "error", "message" => "Gagal menambah barang: " . mysqli_error($koneksi)]);
+}
 ?>

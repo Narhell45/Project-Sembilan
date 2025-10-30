@@ -1,18 +1,22 @@
 <?php
-    include("../config/koneksi.php"); 
+session_start();
+include("../config/koneksi.php");
 
-    $id = $_GET['id'];
-    
-    if (empty($id)) {
-        http_response_code(400);
-        exit;
-    }
+if (!isset($_SESSION['username'])) {
+    die(json_encode(["status" => "error", "message" => "Unauthorized"]));
+}
 
-    $query = "DELETE FROM inventaris WHERE id_barang='$id'"; 
-    
-    if (mysqli_query($koneksi, $query)) {
-        http_response_code(200);
-    } else {
-        http_response_code(500);
-    }
+if ($_SESSION['level'] !== 'admin') {
+    die(json_encode(["status" => "error", "message" => "Hanya admin yang dapat menghapus data."]));
+}
+
+$id_barang = intval($_POST['id_barang']);
+
+$query = "DELETE FROM inventaris WHERE id_barang='$id_barang'";
+
+if (mysqli_query($koneksi, $query)) {
+    echo json_encode(["status" => "success", "message" => "Data barang berhasil dihapus."]);
+} else {
+    echo json_encode(["status" => "error", "message" => "Gagal menghapus data: " . mysqli_error($koneksi)]);
+}
 ?>

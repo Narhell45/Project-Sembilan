@@ -1,27 +1,33 @@
 <?php
-    include("../config/koneksi.php"); 
+session_start();
+include("../config/koneksi.php");
 
-    $id = $_GET['id'];
-    $nama = $_GET['nama']; // Jika ada
-    $jumlah = $_GET['jumlah']; // Jika ada
-    $kondisi = $_GET['kondisi']; // Jika ada
+if (!isset($_SESSION['username'])) {
+    die(json_encode(["status" => "error", "message" => "Unauthorized"]));
+}
 
-    $set_clauses = [];
-    if (!empty($nama)) $set_clauses[] = "nama_barang='$nama'";
-    if (!empty($jumlah)) $set_clauses[] = "jumlah='$jumlah'";
-    if (!empty($kondisi)) $set_clauses[] = "kondisi='$kondisi'";
+if ($_SESSION['level'] !== 'admin') {
+    die(json_encode(["status" => "error", "message" => "Hanya admin yang dapat mengedit data."]));
+}
 
-    if (empty($set_clauses)) {
-        http_response_code(400);
-        exit;
-    }
-    
-    $set_sql = implode(', ', $set_clauses);
-    $query = "UPDATE inventaris SET $set_sql WHERE id_barang='$id'";
-    
-    if (mysqli_query($koneksi, $query)) {
-        http_response_code(200);
-    } else {
-        http_response_code(500);
-    }
+$id_barang = intval($_POST['id_barang']);
+$nama_barang = mysqli_real_escape_string($koneksi, $_POST['nama_barang']);
+$kode_barang = mysqli_real_escape_string($koneksi, $_POST['kode_barang']);
+$jumlah = intval($_POST['jumlah']);
+$kondisi = mysqli_real_escape_string($koneksi, $_POST['kondisi']);
+$lokasi = mysqli_real_escape_string($koneksi, $_POST['lokasi']);
+
+$query = "UPDATE inventaris SET 
+            nama_barang='$nama_barang',
+            kode_barang='$kode_barang',
+            jumlah='$jumlah',
+            kondisi='$kondisi',
+            lokasi='$lokasi'
+          WHERE id_barang='$id_barang'";
+
+if (mysqli_query($koneksi, $query)) {
+    echo json_encode(["status" => "success", "message" => "Data barang berhasil diperbarui."]);
+} else {
+    echo json_encode(["status" => "error", "message" => "Gagal memperbarui data: " . mysqli_error($koneksi)]);
+}
 ?>
