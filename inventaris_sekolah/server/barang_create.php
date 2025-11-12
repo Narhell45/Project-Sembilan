@@ -27,4 +27,6 @@ if (mysqli_query($koneksi, $query)) {
 } else {
     echo json_encode(["status" => "error", "message" => "Gagal menambah barang: " . mysqli_error($koneksi)]);
 }
+
+
 ?>

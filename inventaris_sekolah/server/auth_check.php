@@ -1,8 +1,15 @@
 <?php
-    session_start();
+session_start();
+header("Content-Type: application/json");
 
-    if (isset($_SESSION['username'])) {
-        header("Location: ../public/index.html");
-        exit;
-    }
+if (!isset($_SESSION['username'])) {
+    echo json_encode(["status" => "error", "message" => "Unauthorized"]);
+    exit;
+}
+
+echo json_encode([
+    "status" => "success",
+    "username" => $_SESSION['username'],
+    "level" => $_SESSION['level']
+]);
 ?>

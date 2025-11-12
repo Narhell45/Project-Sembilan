@@ -9,6 +9,7 @@
     $data = mysqli_fetch_assoc($query);
 
     if ($data) {
+        $_SESSION['id_user'] = $data['id_user'];
         $_SESSION['username'] = $data['username'];
         $_SESSION['level'] = $data['level'];
 
@@ -18,6 +19,6 @@
             header("Location: ../public/dashboard_petugas.html");
         }
     } else {
-        echo "<script>alert('Username atau Password salah!'); window.location='inventaris_sekolah/public/index.html</script>";
+        echo "<script>alert('Username atau Password salah!'); window.location='../public/index.html';</script>";
     }
 ?>
