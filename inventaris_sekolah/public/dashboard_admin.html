@@ -1,111 +1,298 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard Admin - Gudang Senjata</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard Admin - Tema Gelap</title>
+<style>
+  /* Reset dan font */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  html, body, .container {
+    height: 100%;
+  }
+  body {
+    background-color: #121212;
+    color: #c0c0c0;
+  }
 
-    
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  .container {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar kiri */
+  .sidebar {
+    width: 250px;
+    background: linear-gradient(180deg, #282828 0%, #323232 100%);
+    color: #999999;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+  }
+
+  .sidebar-title {
+    font-weight: 700;
+    letter-spacing: 1.7px;
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+    color: #e0e0e0;
+    user-select: none;
+  }
+
+  /* Menu navigasi */
+  .menu {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    flex-grow: 1;
+  }
+
+  .menu-item {
+    text-decoration: none;
+    color: #999999;
+    font-weight: 600;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #202020;
+    cursor: pointer;
+    transition: color 0.3s ease, border-color 0.3s ease;
+    user-select: none;
+  }
+
+  .menu-item:hover, .menu-item.active {
+    color: #e0e0e0;
+    border-color: #555555;
+  }
+
+  .logout {
+    color: #ff6f6f;
+    border: none;
+    padding: 0;
+    margin-top: auto;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* Konten utama */
+  .main-content {
+    flex-grow: 1;
+    padding: 2.8rem 3.3rem 6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #171717;
+    overflow: auto;
+  }
+
+  /* Header halaman */
+  .header {
+    margin-bottom: 1.5rem;
+  }
+  .header h1 {
+    font-weight: 600;
+    color: #c0c0c0;
+    font-size: 1.3rem;
+    user-select: none;
+  }
+
+  /* Selamat datang */
+  .welcome h2 {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #d0d0d0;
+    margin-bottom: 2rem;
+    user-select: none;
+  }
+  .wave {
+    font-size: 1.4rem;
+    vertical-align: middle;
+  }
+
+  /* Card Total Barang */
+  .card.total-barang {
+    background: #222222;
+    width: 270px;
+    padding: 1.8rem 2.4rem;
+    border-radius: 8px;
+    color: #999999;
+    box-shadow: 0 5px 13px rgb(0 0 0 / 0.7);
+    border-left: 4px solid #444444;
+    margin-bottom: 3.6rem;
+    user-select: none;
+  }
+
+  .card.total-barang p {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .card.total-barang h3 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #bbbbbb;
+  }
+
+  /* Section aktivitas terbaru */
+  .activity {
+    background: #222222;
+    border-radius: 8px;
+    box-shadow: 0 5px 13px rgb(0 0 0 / 0.7);
+    max-width: 680px;
+    padding: 1.4rem 2rem;
+    user-select: none;
+  }
+
+  .activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.3rem;
+  }
+
+  .activity-header h3 {
+    color: #bbbbbb;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .kelola-btn {
+    background-color: #444444;
+    border: none;
+    color: #c0c0c0;
+    padding: 0.55rem 1.4rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    user-select: none;
+  }
+
+  .kelola-btn:hover {
+    background-color: #666666;
+  }
+
+  .activity-text {
+    color: #888888;
+    font-size: 1rem;
+    line-height: 1.35;
+    min-height: 3rem;
+  }
+
+  .activity-text ul {
+    padding-left: 20px;
+    color: #bbbbbb;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    color: #666666;
+    font-size: 0.85rem;
+    margin-top: 6rem;
+    user-select: none;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    background-color: #171717;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 4px;
+  }
+</style>
 </head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2 class="sidebar-title">ADMIN PANEL</h2>
+      <nav class="menu">
+        <a href="#" class="menu-item active">Dashboard</a>
+        <a href="#" class="menu-item">Data Barang</a>
+        <a href="#" class="menu-item logout">Logout</a>
+      </nav>
+    </aside>
 
-<body id="page-top">
-    <div id="wrapper">
-        
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <main class="main-content">
+      <header class="header">
+        <h1>Dashboard Admin</h1>
+      </header>
 
-        
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
-                <div class="sidebar-brand-icon">
-                    <i class="fas fa-tools"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">Admin Panel</div>
-            </a>
-
-            <hr class="sidebar-divider my-0">
-
-            
-            <li class="nav-item active">
-                <a class="nav-link" href="dashboard_admin.html">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            </li>
-
-            <hr class="sidebar-divider">
-
-            
-            <li class="nav-item">
-                <a class="nav-link" href="barang.html">
-                    <i class="fas fa-archive"></i>
-                    <span>Data Barang</span></a>
-            </li>
-
-            <hr class="sidebar-divider d-none d-md-block">
-
-            
-            <li class="nav-item">
-                <a class="nav-link text-danger" href="../server/logout.php">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
-            </li>
-        </li>
-
-        
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-
-            
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 shadow">
-                    <span class="navbar-brand mb-0 h5 text-primary">Dashboard Admin</span>
-                </nav>
-
-        
-                <div class="container-fluid">
-
-                    <h1 class="h4 mb-4 text-gray-800">Selamat Datang, <span id="username">Admin</span> 👋</h1>
-
-                    
-                    <div class="row">
-                        <div class="col-md-4 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2 text-center">
-                                <i class="fas fa-boxes fa-2x text-gray-400"></i>
-                                <h6 class="mt-2">Total Barang</h6>
-                                <h4 id="total-barang" class="font-weight-bold text-primary">0</h4>
-                            </div>
-                        </div>
-                    </div>
-
-            
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">Aktivitas Terbaru</h6>
-                            <a href="barang.html" class="btn btn-sm btn-primary">Kelola Barang</a>
-                        </div>
-                        <div class="card-body">
-                            <p>Belum ada aktivitas yang tercatat. Data aktivitas akan muncul di sini setelah barang ditambah atau diubah.</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            
-            <footer class="sticky-footer bg-white text-center py-3">
-                <span>© Inventaris Sekolah 2025 - Admin</span>
-            </footer>
+      <section class="welcome">
+        <h2>Selamat Datang, Admin <span class="wave">👋</span></h2>
+        <div class="card total-barang">
+          <p>Total Barang</p>
+          <h3>0</h3>
         </div>
-    </div>
+      </section>
 
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="js/sb-admin-2.min.js"></script>
+      <section class="activity">
+        <div class="activity-header">
+          <h3>Aktivitas Terbaru</h3>
+          <button class="kelola-btn">Kelola Barang</button>
+        </div>
+        <p class="activity-text">
+          Belum ada aktivitas yang tercatat. Data aktivitas akan muncul di sini setelah barang ditambah atau diubah.
+        </p>
+      </section>
 
-    <script>
-        document.getElementById("username").textContent = sessionStorage.getItem("username") || "Admin";
-    </script>
+      <footer class="footer">
+        © Inventaris Sekolah 2025 - Admin
+      </footer>
+    </main>
+  </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const totalBarangEl = document.querySelector('.card.total-barang h3');
+    const activityTextEl = document.querySelector('.activity-text');
+    const kelolaBtn = document.querySelector('.kelola-btn');
+    const menuItems = document.querySelectorAll('.menu-item');
+
+    let totalBarang = 0;
+    let activities = [];
+
+    function renderActivities() {
+      if (activities.length === 0) {
+        activityTextEl.textContent = 'Belum ada aktivitas yang tercatat. Data aktivitas akan muncul di sini setelah barang ditambah atau diubah.';
+      } else {
+        activityTextEl.innerHTML = '';
+        const ul = document.createElement('ul');
+        activities.slice().reverse().forEach(act => {
+          const li = document.createElement('li');
+          li.textContent = act;
+          ul.appendChild(li);
+        });
+        activityTextEl.appendChild(ul);
+      }
+    }
+
+    kelolaBtn.addEventListener('click', () => {
+      totalBarang++;
+      totalBarangEl.textContent = totalBarang;
+
+      const now = new Date();
+      const timestamp = now.toLocaleString();
+      activities.push(`Barang ditambahkan pada ${timestamp}`);
+
+      renderActivities();
+    });
+
+    menuItems.forEach(item => {
+      item.addEventListener('click', () => {
+        menuItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+      });
+    });
+
+    renderActivities();
+  });
+</script>
 </body>
 </html>

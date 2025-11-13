@@ -1,12 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>uji coba</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard Petugas - Inventaris Sekolah</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet" />
+    <style>
+   /* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fonts & Base */
+body, html {
+    font-family: 'Nunito', sans-serif;
+    height: 100vh;
+    background-color: #000000; /* background utama terang */
+    color: #ffffff;
+}
+
+/* Wrapper */
+.wrapper {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background: linear-gradient(180deg, #282828 0%, #323232 100%); /* gradasi abu-abu */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    user-select: none;
+}
+
+.sidebar h1 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 3rem;
+}
+
+/* Menu Sidebar */
+.nav-links {
+    list-style: none;
+    flex-grow: 1;
+}
+
+.nav-links li {
+    margin-bottom: 1.5rem;
+}
+
+.nav-links a {
+    color: #ffffff; /* warna abu terang */
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding-left: 10px;
+    display: block;
+    border-left: 3px solid transparent;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #ffffff;
+    border-left-color: #100f0f; /* abu lebih terang untuk tanda aktif */
+}
+
+.nav-links a.logout {
+    color: #e74c3c; /* merah logout */
+    margin-top: auto;
+}
+
+.nav-links a.logout:hover {
+    background-color: #bf3b34;
+    color: #fff;
+    border-left-color: transparent;
+}
+
+/* Main content */
+.main-content {
+    flex-grow: 1;
+    padding: 40px 50px;
+    background-color: #1f1f1f; /* latar depan putih redup */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.main-header {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #ffffff; /* abu gelap */
+    margin-bottom: 30px;
+}
+
+/* Greeting */
+.greeting {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    color: #ffffff;
+}
+
+/* Cards */
+.cards-container {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.card {
+    background-color: rgb(54, 54, 54);
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    border-left: 5px solid transparent;
+}
+
+.card.total-barang {
+    border-left-color: #212020; /* abu-abu gelap */
+}
+
+.card.tambah-barang {
+    border-left-color: #212020; /* abu-abu sedikit lebih terang */
+}
+
+.card p {
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+.card h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* Tombol Tambah */
+.btn-tambah {
+    margin-top: 20px;
+    background-color: #0d0c0c; /* abu medium */
+    color: rgb(255, 255, 255);
+    padding: 12px 32px;
+    font-weight: 700;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-tambah:hover {
+    background-color: #000000;
+}
+
+/* Info Box */
+.info-box {
+    background-color: #4f4f4f;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.05);
+    padding: 25px 30px;
+    font-size: 1rem;
+    color: #ffffff;
+    user-select: none;
+}
+
+/* Footer */
+.footer {
+    margin-top: auto;
+    text-align: center;
+    color: #ffffff;
+    font-size: 0.9rem;
+    padding: 25px 0 15px;
+    user-select: none;
+}
+    </style>
 </head>
 <body>
-    <h2>HALO GES</h2>
-    <p>geng gila</p>
+    <div class="wrapper">
+        <nav class="sidebar">
+            <h1>PETUGAS</h1>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Dashboard</a></li>
+                <li><a href="#">Data Barang</a></li>
+                <li><a href="#" class="logout">Logout</a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <header class="main-header">Dashboard Petugas</header>
+            <section class="greeting">Halo, Petugas 👋</section>
+            <section class="cards-container">
+                <div class="card total-barang">
+                    <p>Total Barang</p>
+                    <h2 id="total-barang">0</h2>
+                </div>
+                <div class="card tambah-barang">
+                    <p>Tambah Barang Baru</p>
+                    <a href="#" class="btn-tambah">Tambah Barang</a>
+                </div>
+            </section>
+            <section class="info-box">
+                Gunakan menu <strong>Data Barang</strong> untuk melihat atau menambahkan inventaris baru.
+            </section>
+            <footer class="footer">© Inventaris Sekolah 2025 - Petugas</footer>
+        </main>
+    </div>
 </body>
-</html>
+</html> 
